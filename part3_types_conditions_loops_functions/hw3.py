@@ -338,11 +338,11 @@ def handle_command(parts: list[str]) -> str:
 
 
 def main() -> None:
-    while True:
-        line = input()
-        if not line:
-            continue
+    line = input()
+
+    while line:
         print(handle_command(line.strip().split()))
+        line = input()
 
 
 if __name__ == "__main__":
