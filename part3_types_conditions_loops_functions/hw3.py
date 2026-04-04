@@ -271,10 +271,16 @@ def stats_handler(report_date: str) -> str:
 
 
 def parse_float(value: str) -> float | None:
-    try:
-        return float(value.replace(",", "."))
-    except ValueError:
+    normalized = value.replace(",", ".")
+
+    if normalized.count(".") > 1:
         return None
+
+    parts = normalized.split(".")
+    if not all(part.isdigit() for part in parts if part):
+        return None
+
+    return float(normalized)
 
 
 def handle_income(parts: list[str]) -> str:
@@ -333,15 +339,10 @@ def handle_command(parts: list[str]) -> str:
 
 def main() -> None:
     while True:
-        try:
-            line = input().strip()
-        except EOFError:
-            break
-
+        line = input()
         if not line:
             continue
-
-        print(handle_command(line.split()))
+        print(handle_command(line.strip().split()))
 
 
 if __name__ == "__main__":
